@@ -81,15 +81,15 @@ ratpack {
 
     prefix("versions") {
       get { RatpackVersions versions ->
-        versions.all.subscribe { RatpackVersions.All all ->
-          render groovyTemplate("versions.html", versions: all)
+        versions.all.subscribe {
+          render groovyTemplate("versions.html", versions: it)
         }
       }
 
       prefix(":version") {
         get { RatpackVersions versions, GitHubData gitHubData ->
-          versions.all.subscribe { RatpackVersions.All all ->
-            def version = all.find(allPathTokens.version)
+          versions.all.subscribe {
+            def version = it.find(allPathTokens.version)
             if (version == null) {
               clientError(404)
             } else {
@@ -120,9 +120,9 @@ ratpack {
             handler { RatpackVersions versions ->
 
               def snapshot = get(PathBinding).boundTo == "snapshot"
-              (snapshot ? versions.snapshot : versions.current).subscribe { RatpackVersion version ->
-                if (version) {
-                  respond Handlers.assets(version.version, launchConfig.indexFiles)
+              (snapshot ? versions.snapshot : versions.current).subscribe {
+                if (it) {
+                  respond Handlers.assets(it.version, launchConfig.indexFiles)
                 } else {
                   clientError(404)
                 }

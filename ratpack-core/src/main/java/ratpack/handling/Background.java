@@ -66,8 +66,8 @@ public interface Background {
    *   void handle(final Context context) {
    *     context.background {
    *       "hello world, from the background!"
-   *     } then { String result ->
-   *       context.render(result)
+   *     } then {
+   *       context.render(it)
    *     }
    *   }
    * }

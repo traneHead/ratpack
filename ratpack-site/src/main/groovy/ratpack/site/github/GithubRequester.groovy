@@ -21,7 +21,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import ratpack.handling.Foreground
 import ratpack.http.client.HttpClient
 import ratpack.http.client.ReceivedResponse
-import ratpack.http.client.RequestSpec
 import rx.Observable
 import rx.Subscriber
 
@@ -43,13 +42,13 @@ class GithubRequester {
 
     Observable.create({ Subscriber<ArrayNode> it ->
       getPage(httpClient, url, it)
-    } as Observable.OnSubscribe<ArrayNode>).reduce { ArrayNode a, ArrayNode b ->
+    } as Observable.OnSubscribe<ArrayNode>).reduce { a, b ->
       a.addAll(b)
     }.cache()
   }
 
   private void getPage(HttpClient httpClient, String url, Subscriber<ArrayNode> pagingSubscription) {
-    def promise = httpClient.get(url) { RequestSpec it ->
+    def promise = httpClient.get(url) {
       it.headers.set("User-Agent", "http://www.ratpack.io")
     }
 

@@ -82,8 +82,8 @@ class RxBackgroundSpec extends RatpackGroovyDslSpec {
           .map { it.toLowerCase() }
           .subscribe({
           returnString += it
-        }, { Throwable error ->
-          throw error
+        }, {
+          throw it
         }, {
           render returnString
         })
